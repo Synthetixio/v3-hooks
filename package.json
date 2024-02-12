@@ -7,17 +7,37 @@
   "license": "MIT",
   "private": true,
   "files": [
-    "index.js"
+    "index.js",
+    "lib"
   ],
   "scripts": {
+    "start": "webpack-cli serve",
+    "build": "webpack-cli",
+    "codegen": "node codegen",
     "pretty": "prettier . '**/*' --write",
-    "pretty:check": "prettier . '**/*' --check"
+    "pretty:check": "prettier . '**/*' --check",
+    "base:mainnet": "anvil --fork-url https://mainnet.base.org",
+    "base:sepolia": "anvil --fork-url https://sepolia.base.org",
+    "cy": "NODE_ENV=test cypress open --component --browser chrome",
+    "cy:check": "NODE_ENV=test cypress run --component --browser chrome",
+    "e2e": "CYPRESS_SYNTHETIX_PRESET=andromeda NODE_ENV=test cypress open --e2e --browser chrome",
+    "e2e:check": "CYPRESS_SYNTHETIX_PRESET=andromeda NODE_ENV=test cypress run --e2e --browser chrome"
   },
   "dependencies": {
-    "@synthetixio/v3-contracts": "^4.0.0"
+    "@synthetixio/v3-contracts": "^4.0.0",
+    "@tanstack/react-query": "^5.20.1",
+    "react": "^18.2.0"
   },
   "devDependencies": {
-    "prettier": "^3.2.5"
+    "chrome-remote-interface": "^0.33.0",
+    "cypress": "^13.6.4",
+    "ethers": "^5.0.0",
+    "html-webpack-plugin": "^5.6.0",
+    "prettier": "^3.2.5",
+    "react-dom": "^18.2.0",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   },
   "packageManager": "yarn@4.1.0"
 }
