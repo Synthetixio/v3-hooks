@@ -1,0 +1,28 @@
+version: 2.1
+
+parameters:
+  node-version:
+    type: string
+    default: '20.10.0'
+
+commands:
+  yarn-install:
+    steps:
+      - run: yarn install --immutable
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:<< pipeline.parameters.node-version >>
+    steps:
+      - checkout
+      - yarn-install
+      - run: yarn dedupe --check
+      - run: yarn pretty:check
+
+workflows:
+  version: 2.1
+
+  tests:
+    jobs:
+      - test
