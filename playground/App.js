@@ -6,11 +6,11 @@ export function App() {
   return React.createElement(
     SynthetixProvider,
     {
-      chainId: Number(window.ethereum.chainId),
+      chainId: window.ethereum ? Number(window.ethereum.chainId) : undefined,
       preset: 'andromeda',
       signer: window.ethereum,
-      isConnected: window.ethereum.isConnected(),
-      walletAddress: window.ethereum.selectedAddress,
+      isConnected: window.ethereum ? window.ethereum.isConnected() : false,
+      walletAddress: window.ethereum ? window.ethereum.selectedAddress : undefined,
     },
     React.createElement(Home)
   );

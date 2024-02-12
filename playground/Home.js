@@ -7,6 +7,10 @@ export function Home() {
   const blockchain = useBlockchain();
 
   React.useEffect(() => {
+    if (!window.ethereum) {
+      return;
+    }
+
     function onAccountsChanged(accounts) {
       updateBlockchain({
         isConnected: window.ethereum.isConnected(),
@@ -31,6 +35,6 @@ export function Home() {
     React.Fragment,
     {},
     React.createElement('h1', {}, 'Synthetix V3 Hooks Playground'),
-    React.createElement(Accounts)
+    blockchain.walletAddress ? React.createElement(Accounts) : null
   );
 }

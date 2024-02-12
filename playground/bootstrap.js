@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import { Home } from './playground/Home';
+import { App } from './App';
 
 const container = document.createElement('div');
 container.id = 'app';
@@ -41,9 +41,11 @@ window.devtoolsFormatters.push({
 });
 
 async function run() {
-  await window.ethereum.enable();
+  if (window.ethereum) {
+    await window.ethereum.enable();
+  }
   const root = ReactDOM.createRoot(container);
-  root.render(React.createElement(Home));
+  root.render(React.createElement(App));
 }
 
 run();

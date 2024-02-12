@@ -30,4 +30,17 @@ describe('Accounts', () => {
     cy.contains(`#app p`, 2);
     cy.contains(`#app p`, 3);
   });
+
+  it('should show "No accounts" message for an empty wallet', () => {
+    cy.viewport(800, 500);
+    cy.mount(
+      React.createElement(AccountsUI, {
+        isLoading: false,
+        data: [],
+        isError: false,
+        error: undefined,
+      })
+    );
+    cy.contains(`#app`, 'No accounts');
+  });
 });

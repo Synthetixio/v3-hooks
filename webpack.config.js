@@ -40,7 +40,7 @@ module.exports = {
   devtool: false,
   devServer,
   mode: 'development',
-  entry: './playground.js',
+  entry: './playground/bootstrap.js',
 
   output: {
     path: path.resolve(__dirname, 'dist'),

@@ -12,7 +12,7 @@ export function AccountsUI({ isLoading, data, isError, error }) {
         ? `Error: ${error}`
         : data && data.length > 0
           ? data.map((account) => React.createElement('p', { key: account }, account))
-          : `No accounts found for ${blockchain.walletAddress}`
+          : `No accounts`
   );
 }
 
