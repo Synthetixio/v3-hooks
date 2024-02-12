@@ -1,0 +1,12 @@
+{
+  "name": "@synthetixio/v3-hooks",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "synthetixio/v3-hooks",
+  "author": "Synthetix",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+  },
+  "packageManager": "yarn@4.1.0"
+}
