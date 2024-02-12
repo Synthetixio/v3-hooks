@@ -6,6 +6,9 @@
   "author": "Synthetix",
   "license": "MIT",
   "private": true,
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "pretty": "prettier . '**/*' --write",
     "pretty:check": "prettier . '**/*' --check"
