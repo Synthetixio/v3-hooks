@@ -10,8 +10,11 @@
     "pretty": "prettier . '**/*' --write",
     "pretty:check": "prettier . '**/*' --check"
   },
-  "packageManager": "yarn@4.1.0",
+  "dependencies": {
+    "@synthetixio/v3-contracts": "^4.0.0"
+  },
   "devDependencies": {
     "prettier": "^3.2.5"
-  }
+  },
+  "packageManager": "yarn@4.1.0"
 }

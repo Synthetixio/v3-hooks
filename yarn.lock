@@ -5,10 +5,18 @@ __metadata:
   version: 8
   cacheKey: 10
 
+"@synthetixio/v3-contracts@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@synthetixio/v3-contracts@npm:4.0.0"
+  checksum: 10/484892eb4b789b7a13eb7275716f5277297441a1d1819f22e7109c8e1bd19209ec8e04fb5f1ed215413a069f27dc5e2e3b20babcf73cb241a78139538cd9b0c0
+  languageName: node
+  linkType: hard
+
 "@synthetixio/v3-hooks@workspace:.":
   version: 0.0.0-use.local
   resolution: "@synthetixio/v3-hooks@workspace:."
   dependencies:
+    "@synthetixio/v3-contracts": "npm:^4.0.0"
     prettier: "npm:^3.2.5"
   languageName: unknown
   linkType: soft
