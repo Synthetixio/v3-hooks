@@ -1,4 +1,5 @@
 const { ethers } = require('ethers');
+const { getContract } = require('../../lib/getContract');
 
 async function createAccount({ privateKey }) {
   const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545');
@@ -8,11 +9,8 @@ async function createAccount({ privateKey }) {
 
   const wallet = new ethers.Wallet(privateKey, provider);
 
-  const CoreProxy = new ethers.Contract(
-    require(`@synthetixio/v3-contracts/${chainId}-${preset}/meta.json`).contracts.CoreProxy,
-    require(`@synthetixio/v3-contracts/${chainId}-${preset}/CoreProxy.readable.json`),
-    wallet
-  );
+  const { address, abi } = getContract(chainId, preset, 'CoreProxy');
+  const CoreProxy = new ethers.Contract(address, abi, wallet);
 
   const accountId = parseInt(`1337${require('crypto').randomInt(1000)}`);
 

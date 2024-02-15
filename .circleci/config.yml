@@ -36,6 +36,7 @@ jobs:
       - yarn-install
       - run: yarn dedupe --check
       - run: yarn pretty:check
+      - run: yarn codegen && git diff --exit-code
       - run: cypress run --component --browser chrome
       - store_test_results:
           path: 'cypress/reports'
