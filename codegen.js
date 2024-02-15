@@ -3,6 +3,7 @@
 const path = require('node:path');
 const fs = require('node:fs/promises');
 const prettier = require('prettier');
+const ethers = require('ethers');
 
 const ABI_WHITELIST = {
   CoreProxy: {
@@ -22,6 +23,11 @@ async function prettyJs(content) {
     parser: 'acorn',
     ...prettierOptions,
   });
+}
+
+function readableAbi(abi) {
+  const iface = new ethers.utils.Interface(abi);
+  return iface.format(ethers.utils.FormatTypes.full);
 }
 
 async function codegen() {
@@ -83,7 +89,7 @@ async function codegen() {
         `./lib/deployments/${chainId}-${preset}/${contractName}.js`,
         await prettyJs(`
           exports.address = ${JSON.stringify(address)};
-          exports.abi = ${JSON.stringify(abi)};
+          exports.abi = ${JSON.stringify(readableAbi(abi))};
         `),
         'utf8'
       );
