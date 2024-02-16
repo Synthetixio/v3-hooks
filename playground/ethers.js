@@ -1,6 +1,8 @@
 import { ethers } from 'ethers';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
+import { ethers } from 'ethers';
+import { SynthetixProvider } from '../lib/SynthetixProvider';
 import { App } from './App';
 
 const container = document.createElement('div');
@@ -41,11 +43,30 @@ window.devtoolsFormatters.push({
 });
 
 async function run() {
-  if (window.ethereum) {
-    await window.ethereum.enable();
-  }
   const root = ReactDOM.createRoot(container);
-  root.render(React.createElement(App));
+
+  const chainId = window.ethereum ? Number(window.ethereum.chainId) : undefined;
+  const preset = 'andromeda';
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+
+  let walletAddress = window.ethereum.selectedAddress;
+
+  // Autoconnect here until we have button in the UI
+  if (!walletAddress) {
+    [walletAddress] = await provider.send('eth_requestAccounts');
+  }
+
+  const isConnected = Boolean(walletAddress);
+
+  root.render(
+    React.createElement(
+      SynthetixProvider,
+      { isEthers: true, chainId, preset, signer, provider, isConnected, walletAddress },
+      React.createElement(App)
+    )
+  );
 }
 
 run();
