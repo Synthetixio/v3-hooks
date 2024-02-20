@@ -5,12 +5,6 @@ function metamask({ pk, address }) {
   return new Proxy(provider, {
     get(target, prop) {
       switch (prop) {
-        case 'enable':
-          return async () => {
-            // connected
-          };
-        case 'isConnected':
-          return () => true;
         case 'selectedAddress':
           return address;
         case 'chainId':

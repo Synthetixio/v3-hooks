@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useAccounts } from '../lib/useAccounts';
-import { useConfig } from '../lib/useConfig';
+import { useSynthetix } from '../lib/useSynthetix';
 
 export function AccountsUI({ isLoading, data, isError, error }) {
   return React.createElement(
@@ -17,9 +17,9 @@ export function AccountsUI({ isLoading, data, isError, error }) {
 }
 
 export function Accounts() {
-  const [config] = useConfig();
+  const [synthetix] = useSynthetix();
   const { isLoading, data, isError, error } = useAccounts({
-    walletAddress: config.walletAddress,
+    walletAddress: synthetix.walletAddress,
   });
   return React.createElement(AccountsUI, { isLoading, data, isError, error });
 }

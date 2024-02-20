@@ -10,45 +10,15 @@ import {
   createPublicClient,
   createWalletClient,
 } from 'viem';
-import { SynthetixProvider } from '../lib/SynthetixProvider';
+import { SynthetixProvider } from '../lib/useSynthetix';
 import { App } from './App';
+import './devtools';
+
+import { createReader } from '../lib/adapters/viem';
 
 const container = document.createElement('div');
 container.id = 'app';
 document.body.appendChild(container);
-
-function number(obj) {
-  if (obj === BigInt(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff)) {
-    return 'MaxUint256';
-  }
-  if (obj === BigInt(0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff)) {
-    return 'MaxInt256';
-  }
-  if (obj.abs().gt(1e10)) {
-    // Assuming everything bigger than 1e10 is a wei
-    return `wei ${parseFloat(formatEther(`${obj}`))}`;
-  }
-  return parseFloat(obj.toString());
-}
-
-window.devtoolsFormatters = window.devtoolsFormatters ?? [];
-window.devtoolsFormatters.push({
-  header: function (obj) {
-    if (obj instanceof BigInt) {
-      return [
-        'div',
-        { style: 'color: #f66' },
-        ['span', {}, 'BigInt('],
-        ['span', { style: 'color: #3f3' }, number(obj)],
-        ['span', {}, ')'],
-      ];
-    }
-    return null;
-  },
-  hasBody: function () {
-    return false;
-  },
-});
 
 async function run() {
   const root = ReactDOM.createRoot(container);
@@ -56,7 +26,7 @@ async function run() {
   const chainId = window.ethereum ? Number(window.ethereum.chainId) : undefined;
   const preset = 'andromeda';
 
-  const provider = window.ethereum
+  const publicClient = window.ethereum
     ? createPublicClient({ transport: custom(window.ethereum) })
     : undefined;
 
@@ -71,19 +41,14 @@ async function run() {
     [walletAddress] = signer ? await signer.requestAddresses() : undefined;
   }
 
-  const isConnected = Boolean(walletAddress);
-
   root.render(
     React.createElement(
       SynthetixProvider,
       {
-        isViem: true,
         chainId,
         preset,
-        signer,
-        provider,
-        isConnected,
-        walletAddress,
+        reader: createReader({ publicClient }),
+        walletAddress: walletAddress ? walletAddress.toLowerCase() : undefined,
       },
       React.createElement(App)
     )

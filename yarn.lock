@@ -630,6 +630,7 @@ __metadata:
   dependencies:
     "@synthetixio/v3-contracts": "npm:^4.0.0"
     "@tanstack/react-query": "npm:^5.20.1"
+    "@tanstack/react-query-devtools": "npm:^5.24.0"
     chrome-remote-interface: "npm:^0.33.0"
     cypress: "npm:^13.6.4"
     ethers: "npm:^5.0.0"
@@ -649,6 +650,25 @@ __metadata:
   version: 5.20.1
   resolution: "@tanstack/query-core@npm:5.20.1"
   checksum: 10/c4b48e2d741f56addaf2999f3d687119d40f1a8c8ea9d10c9d70c12e45e060e106dd8bfddc0de7a6b8fa77de99368f405ac377b7bd73818df99fe4808dfb3fa1
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-devtools@npm:5.24.0":
+  version: 5.24.0
+  resolution: "@tanstack/query-devtools@npm:5.24.0"
+  checksum: 10/92a4faed16ca86bb2e65fec5c47295f537322c6fb16e5e694c66c99a1e6fcb4e0a757b2cd27d73c8315798503299d6959923cdfd17013b038f18772784bf7aec
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^5.24.0":
+  version: 5.24.0
+  resolution: "@tanstack/react-query-devtools@npm:5.24.0"
+  dependencies:
+    "@tanstack/query-devtools": "npm:5.24.0"
+  peerDependencies:
+    "@tanstack/react-query": ^5.22.2
+    react: ^18.0.0
+  checksum: 10/9a078a62e93026b3cd80fa9b5543f3762acf52d4cf94475d1ac667003ea9589b769a62ddc74fcb6b5ab48fa7d6802ecbd2ad8ebd036cbf1129892c70c11b3e2a
   languageName: node
   linkType: hard
 

@@ -3,5 +3,5 @@ module.exports = {
   ...require('./lib/SynthetixProvider'),
   ...require('./lib/SynthetixQueryContext'),
   ...require('./lib/useAccounts'),
-  ...require('./lib/useConfig'),
+  ...require('./lib/useSynthetix'),
 };

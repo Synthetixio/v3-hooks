@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { useConfig } from '../lib/useConfig';
+import { useSynthetix } from '../lib/useSynthetix';
 import { Accounts } from './Accounts';
 
 export function Home() {
-  const [config, updateConfig] = useConfig();
+  const [synthetix, updateSynthetix] = useSynthetix();
 
   React.useEffect(() => {
     if (!window.ethereum) {
@@ -11,14 +11,15 @@ export function Home() {
     }
 
     function onAccountsChanged(accounts) {
-      updateConfig({
-        isConnected: window.ethereum.isConnected(),
-        walletAddress: window.ethereum.selectedAddress,
+      updateSynthetix({
+        walletAddress: window.ethereum.selectedAddress
+          ? `${window.ethereum.selectedAddress}`.toLowerCase()
+          : undefined,
       });
     }
 
     function onChainChanged(chainId) {
-      updateConfig({ chainId: Number(chainId) });
+      updateSynthetix({ chainId: Number(chainId) });
     }
 
     window.ethereum.on('accountsChanged', onAccountsChanged);
@@ -34,6 +35,6 @@ export function Home() {
     React.Fragment,
     {},
     React.createElement('h1', {}, 'Synthetix V3 Hooks Playground'),
-    config.walletAddress ? React.createElement(Accounts) : null
+    synthetix.walletAddress ? React.createElement(Accounts) : null
   );
 }

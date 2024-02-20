@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 const htmlPlugin = new HtmlWebpackPlugin({
+  title: 'Ethers Playground / Synthetix V3 Hooks',
   scriptLoading: 'defer',
   minify: false,
   hash: false,

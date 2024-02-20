@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 const htmlPlugin = new HtmlWebpackPlugin({
+  title: 'Viem Playground / Synthetix V3 Hooks',
   scriptLoading: 'defer',
   minify: false,
   hash: false,
@@ -10,7 +11,7 @@ const htmlPlugin = new HtmlWebpackPlugin({
 });
 
 const devServer = {
-  port: '3000',
+  port: '3001',
 
   hot: false,
   liveReload: false,
