@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { useBlockchain, useUpdateBlockchain } from '../lib/useBlockchain';
+import { useConfig } from '../lib/useConfig';
 import { Accounts } from './Accounts';
 
 export function Home() {
-  const updateBlockchain = useUpdateBlockchain();
-  const blockchain = useBlockchain();
+  const [config, updateConfig] = useConfig();
 
   React.useEffect(() => {
     if (!window.ethereum) {
@@ -12,14 +11,14 @@ export function Home() {
     }
 
     function onAccountsChanged(accounts) {
-      updateBlockchain({
+      updateConfig({
         isConnected: window.ethereum.isConnected(),
         walletAddress: window.ethereum.selectedAddress,
       });
     }
 
     function onChainChanged(chainId) {
-      updateBlockchain({ chainId: Number(chainId) });
+      updateConfig({ chainId: Number(chainId) });
     }
 
     window.ethereum.on('accountsChanged', onAccountsChanged);
@@ -35,6 +34,6 @@ export function Home() {
     React.Fragment,
     {},
     React.createElement('h1', {}, 'Synthetix V3 Hooks Playground'),
-    blockchain.walletAddress ? React.createElement(Accounts) : null
+    config.walletAddress ? React.createElement(Accounts) : null
   );
 }

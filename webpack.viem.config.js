@@ -43,7 +43,7 @@ module.exports = {
   entry: './playground/viem.js',
 
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist/viem'),
     publicPath: '',
     filename: '[name].js',
     chunkFilename: '[name].js',

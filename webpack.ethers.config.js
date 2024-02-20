@@ -40,10 +40,10 @@ module.exports = {
   devtool: false,
   devServer,
   mode: 'development',
-  entry: './playground/bootstrap.js',
+  entry: './playground/ethers.js',
 
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist/ethers'),
     publicPath: '',
     filename: '[name].js',
     chunkFilename: '[name].js',

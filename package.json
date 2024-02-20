@@ -12,8 +12,9 @@
   ],
   "scripts": {
     "start:ethers": "webpack-cli serve --config webpack.ethers.config.js",
+    "build:ethers": "webpack-cli --config webpack.ethers.config.js",
     "start:viem": "webpack-cli serve --config webpack.viem.config.js",
-    "build": "webpack-cli",
+    "build:viem": "webpack-cli --config webpack.viem.config.js",
     "codegen": "node codegen",
     "pretty": "prettier . '**/*' --write",
     "pretty:check": "prettier . '**/*' --check",

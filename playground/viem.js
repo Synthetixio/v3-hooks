@@ -56,14 +56,19 @@ async function run() {
   const chainId = window.ethereum ? Number(window.ethereum.chainId) : undefined;
   const preset = 'andromeda';
 
-  const signer = createWalletClient({ transport: custom(window.ethereum) });
-  const provider = createPublicClient({ transport: custom(window.ethereum) });
+  const provider = window.ethereum
+    ? createPublicClient({ transport: custom(window.ethereum) })
+    : undefined;
 
-  let [walletAddress] = await signer.getAddresses();
+  const signer = window.ethereum
+    ? createWalletClient({ transport: custom(window.ethereum) })
+    : undefined;
+
+  let [walletAddress] = signer ? await signer.getAddresses() : undefined;
 
   // Autoconnect here until we have button in the UI
   if (!walletAddress) {
-    [walletAddress] = await signer.requestAddresses();
+    [walletAddress] = signer ? await signer.requestAddresses() : undefined;
   }
 
   const isConnected = Boolean(walletAddress);
@@ -71,7 +76,15 @@ async function run() {
   root.render(
     React.createElement(
       SynthetixProvider,
-      { isViem: true, chainId, preset, signer, provider, isConnected, walletAddress },
+      {
+        isViem: true,
+        chainId,
+        preset,
+        signer,
+        provider,
+        isConnected,
+        walletAddress,
+      },
       React.createElement(App)
     )
   );

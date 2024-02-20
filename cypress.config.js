@@ -13,7 +13,7 @@ module.exports = defineConfig({
     devServer: {
       framework: 'react',
       bundler: 'webpack',
-      webpackConfig: require('./webpack.config'),
+      webpackConfig: require('./webpack.ethers.config'),
     },
     setupNodeEvents(on, config) {
       return config;

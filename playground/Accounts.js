@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useAccounts } from '../lib/useAccounts';
-import { useBlockchain } from '../lib/useBlockchain';
+import { useConfig } from '../lib/useConfig';
 
 export function AccountsUI({ isLoading, data, isError, error }) {
   return React.createElement(
@@ -17,9 +17,9 @@ export function AccountsUI({ isLoading, data, isError, error }) {
 }
 
 export function Accounts() {
-  const blockchain = useBlockchain();
+  const [config] = useConfig();
   const { isLoading, data, isError, error } = useAccounts({
-    walletAddress: blockchain.walletAddress,
+    walletAddress: config.walletAddress,
   });
   return React.createElement(AccountsUI, { isLoading, data, isError, error });
 }

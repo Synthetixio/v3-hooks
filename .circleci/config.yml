@@ -72,7 +72,7 @@ jobs:
 
       - run:
           name: Run server localhost:3000
-          command: yarn start
+          command: yarn start:ethers
           background: true
 
       - run:
