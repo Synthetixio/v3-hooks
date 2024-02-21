@@ -53,6 +53,7 @@ async function codegen() {
     //
     'const deployments = {};',
   ];
+  const AllErrors = new Set();
   for (const { chainId, preset } of supportedDeployments) {
     await fs.mkdir(`./lib/deployments/${chainId}-${preset}`, { recursive: true });
     const meta = JSON.parse(
@@ -92,7 +93,24 @@ async function codegen() {
         `deployments["${chainId}"]["${preset}"]["${contractName}"] = require('./${chainId}-${preset}/${contractName}')`
       );
     }
+
+    // Generate AllErrors
+    const abi = JSON.parse(
+      await fs.readFile(
+        require.resolve(`@synthetixio/v3-contracts/${chainId}-${preset}/AllErrors.readable.json`),
+        'utf8'
+      )
+    );
+    abi.forEach((e) => AllErrors.add(e));
   }
+
+  const { Interface } = require('@ethersproject/abi');
+  await fs.writeFile(
+    `./lib/deployments/AllErrors.js`,
+    await prettyJs(`exports.abi = ${new Interface(Array.from(AllErrors)).format('json')};`),
+    'utf8'
+  );
+  index.push(`deployments["AllErrors"] = require('./AllErrors')`);
 
   index.push(`exports.deployments = deployments;`);
 
