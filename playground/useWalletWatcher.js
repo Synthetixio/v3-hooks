@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { useSynthetix } from '../lib/useSynthetix';
-import { Accounts } from './Accounts';
+const { useSynthetix } = require('../lib/useSynthetix');
 
-export function Home() {
+export function useWalletWatcher() {
   const [synthetix, updateSynthetix] = useSynthetix();
 
   React.useEffect(() => {
@@ -31,10 +30,5 @@ export function Home() {
     };
   }, []);
 
-  return React.createElement(
-    React.Fragment,
-    {},
-    React.createElement('h1', {}, 'Synthetix V3 Hooks Playground'),
-    synthetix.walletAddress ? React.createElement(Accounts) : null
-  );
+  return null;
 }
