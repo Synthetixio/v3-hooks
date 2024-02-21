@@ -37,6 +37,21 @@ const devServer = {
   compress: false,
 };
 
+const babelRule = {
+  test: /\.(js)$/,
+  include: [
+    // Only include code in the playground to ensure that library functions do not need compilation
+    /cypress/,
+    /playground/,
+  ],
+  use: {
+    loader: require.resolve('babel-loader'),
+    options: {
+      configFile: path.resolve(__dirname, 'babel.config.js'),
+    },
+  },
+};
+
 module.exports = {
   devtool: false,
   devServer,
@@ -59,6 +74,6 @@ module.exports = {
   },
 
   module: {
-    rules: [],
+    rules: [babelRule],
   },
 };

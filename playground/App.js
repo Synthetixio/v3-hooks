@@ -13,19 +13,22 @@ export function App() {
 
   const isChainSupported = useIsChainSupported();
 
-  return React.createElement(
-    React.Fragment,
-    {},
-    React.createElement(ReactQueryDevtools, { client: synthetix.queryClient }),
-    React.createElement('h1', {}, 'Synthetix V3 Hooks Playground'),
-    React.createElement(Wallet),
+  return (
+    <>
+      <h1>Synthetix V3 Hooks Playground</h1>
+      <section>
+        <Wallet />
+      </section>
 
-    isChainSupported && synthetix.walletAddress
-      ? React.createElement(
-          React.Fragment,
-          {},
-          React.createElement('section', {}, React.createElement(Accounts))
-        )
-      : null
+      {isChainSupported && synthetix.walletAddress ? (
+        <>
+          <section>
+            <Accounts />
+          </section>
+        </>
+      ) : null}
+
+      <ReactQueryDevtools client={synthetix.queryClient} />
+    </>
   );
 }

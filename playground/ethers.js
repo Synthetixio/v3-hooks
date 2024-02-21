@@ -19,23 +19,18 @@ async function run() {
   const provider = window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : undefined;
   const { chainId } = provider ? await provider.getNetwork() : 0;
 
-  const [walletAddress] = provider ? await provider.listAccounts() : [];
+  const accounts = provider ? await provider.listAccounts() : [];
+  const walletAddress = accounts[0] ? accounts[0].toLowerCase() : undefined;
+  const reader = createReader({ provider });
 
   window.__connect = async () => {
     return provider ? await provider.send('eth_requestAccounts') : undefined;
   };
 
   root.render(
-    React.createElement(
-      SynthetixProvider,
-      {
-        chainId,
-        preset,
-        reader: createReader({ provider }),
-        walletAddress: walletAddress ? walletAddress.toLowerCase() : undefined,
-      },
-      React.createElement(App)
-    )
+    <SynthetixProvider {...{ chainId, preset, reader, walletAddress }}>
+      <App />
+    </SynthetixProvider>
   );
 }
 

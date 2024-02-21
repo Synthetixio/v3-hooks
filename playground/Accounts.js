@@ -2,78 +2,20 @@ import * as React from 'react';
 import { useAccounts } from '../lib/useAccounts';
 import { useAccountOwner } from '../lib/useAccountOwner';
 import { useSynthetix } from '../lib/useSynthetix';
-
-function QueryResult({ isError, error, isLoading, children }) {
-  if (isLoading) {
-    return React.createElement(React.Fragment, {}, 'Loading...');
-  }
-
-  if (isError) {
-    return React.createElement(
-      React.Fragment,
-      {},
-      error ? React.createElement('pre', {}, error.stack) : 'Error'
-    );
-  }
-
-  return React.createElement(React.Fragment, {}, children);
-}
+import { Address } from './Address';
+import { QueryResult } from './QueryResult';
+import { CreateAccount } from './CreateAccount';
 
 export function Account({ accountId }) {
   const accountOwner = useAccountOwner({ accountId });
 
-  return React.createElement(
-    'p',
-    {},
-    `# ${accountId}, owned by `,
-    ' ',
-    React.createElement(QueryResult, accountOwner, accountOwner.data ? accountOwner.data : null)
-  );
-}
-
-export function CreateAccount() {
-  const [accountId, setAccountId] = React.useState('');
-
-  const accountOwner = useAccountOwner({ accountId });
-
-  return React.createElement(
-    'form',
-    {
-      method: 'POST',
-      action: '#',
-      onSubmit: (e) => {
-        e.preventDefault();
-        console.log(`accountId`, accountId);
-      },
-    },
-
-    React.createElement('input', {
-      type: 'number',
-      name: 'accountId',
-      placeholder: 'Account ID',
-      value: accountId,
-      onChange: (e) => setAccountId(e.target.value),
-    }),
-    ' ',
-    React.createElement(
-      'button',
-      {
-        type: 'submit',
-        disabled:
-          accountOwner.isLoading ||
-          accountOwner.data !== '0x0000000000000000000000000000000000000000',
-      },
-      'Create'
-    ),
-    React.createElement('br'),
-    React.createElement(
-      QueryResult,
-      accountOwner,
-      accountOwner.data === '0x0000000000000000000000000000000000000000' ||
-        accountOwner.data === undefined
-        ? null
-        : `Account already exists and owned by ${accountOwner.data}`
-    )
+  return (
+    <p>
+      {accountId}, owned by{' '}
+      <QueryResult {...accountOwner}>
+        {accountOwner.data ? <Address address={accountOwner.data} /> : null}
+      </QueryResult>
+    </p>
   );
 }
 
@@ -83,24 +25,15 @@ export function Accounts() {
     walletAddress: synthetix.walletAddress,
   });
 
-  return React.createElement(
-    React.Fragment,
-    {},
-
-    React.createElement('h2', {}, 'Accounts'),
-    React.createElement(
-      QueryResult,
-      accounts,
-      accounts.data && accounts.data.length > 0
-        ? React.createElement(
-            React.Fragment,
-            {},
-            accounts.data.map((accountId) =>
-              React.createElement(Account, { key: accountId, accountId })
-            )
-          )
-        : React.createElement(React.Fragment, {}, 'No accounts')
-    ),
-    React.createElement(CreateAccount)
+  return (
+    <>
+      <h2>Accounts</h2>
+      <QueryResult {...accounts}>
+        {accounts.data && accounts.data.length > 0
+          ? accounts.data.map((accountId) => <Account key={accountId} accountId={accountId} />)
+          : 'No accounts'}
+      </QueryResult>
+      <CreateAccount />
+    </>
   );
 }

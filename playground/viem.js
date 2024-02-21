@@ -36,23 +36,18 @@ async function run() {
     ? createWalletClient({ transport: custom(window.ethereum) })
     : undefined;
 
-  const [walletAddress] = signer ? await signer.getAddresses() : [];
+  const accounts = signer ? await signer.getAddresses() : [];
+  const walletAddress = accounts[0] ? accounts[0].toLowerCase() : undefined;
+  const reader = createReader({ publicClient });
 
   window.__connect = async () => {
     return signer ? await signer.requestAddresses() : undefined;
   };
 
   root.render(
-    React.createElement(
-      SynthetixProvider,
-      {
-        chainId,
-        preset,
-        reader: createReader({ publicClient }),
-        walletAddress: walletAddress ? walletAddress.toLowerCase() : undefined,
-      },
-      React.createElement(App)
-    )
+    <SynthetixProvider {...{ chainId, preset, reader, walletAddress }}>
+      <App />
+    </SynthetixProvider>
   );
 }
 

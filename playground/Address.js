@@ -27,41 +27,34 @@ function href({ chainId, address }) {
 export function Address({ address }) {
   const [synthetix] = useSynthetix();
 
-  return React.createElement(
-    'a',
-    {
-      href: href({ chainId: synthetix.chainId, address }),
-      target: '_blank',
-      rel: 'noopener noreferrer',
-      style: {
+  return (
+    <a
+      href={href({ chainId: synthetix.chainId, address })}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
         textDecoration: 'none',
-      },
-    },
-    React.createElement(
-      'code',
-      {
-        title: address,
-      },
-      address
-        .substring(0, 6)
-        .concat('...')
-        .concat(address.substring(address.length - 4))
-    ),
-    ' ',
-    React.createElement(
-      'span',
-      {
-        title: `Copy address to clipboard`,
-        onClick: (e) => {
+      }}
+    >
+      <code title={address}>
+        {address
+          .substring(0, 6)
+          .concat('...')
+          .concat(address.substring(address.length - 4))}
+      </code>{' '}
+      <span
+        title="Copy address to clipboard"
+        onClick={(e) => {
           e.preventDefault();
           try {
             navigator.clipboard.writeText(address);
           } catch (error) {
             console.error(error);
           }
-        },
-      },
-      '📋'
-    )
+        }}
+      >
+        📋
+      </span>
+    </a>
   );
 }
