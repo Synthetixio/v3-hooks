@@ -3,7 +3,7 @@ import { useAccounts } from '../lib/useAccounts';
 import { useAccountOwner } from '../lib/useAccountOwner';
 import { useSynthetix } from '../lib/useSynthetix';
 
-function QueryStatus({ isError, error, isLoading }) {
+function QueryResult({ isError, error, isLoading, children }) {
   if (isLoading) {
     return React.createElement(React.Fragment, {}, 'Loading...');
   }
@@ -16,7 +16,7 @@ function QueryStatus({ isError, error, isLoading }) {
     );
   }
 
-  return null;
+  return React.createElement(React.Fragment, {}, children);
 }
 
 export function Account({ accountId }) {
@@ -27,8 +27,7 @@ export function Account({ accountId }) {
     {},
     `# ${accountId}, owned by `,
     ' ',
-    React.createElement(QueryStatus, accountOwner),
-    accountOwner.data ? accountOwner.data : null
+    React.createElement(QueryResult, accountOwner, accountOwner.data ? accountOwner.data : null)
   );
 }
 
@@ -68,7 +67,7 @@ export function CreateAccount() {
     ),
     React.createElement('br'),
     React.createElement(
-      QueryStatus,
+      QueryResult,
       accountOwner,
       accountOwner.data === '0x0000000000000000000000000000000000000000' ||
         accountOwner.data === undefined
@@ -89,17 +88,19 @@ export function Accounts() {
     {},
 
     React.createElement('h2', {}, 'Accounts'),
-    React.createElement(QueryStatus, accounts),
-
-    accounts.data && accounts.data.length > 0
-      ? React.createElement(
-          React.Fragment,
-          {},
-          accounts.data.map((accountId) =>
-            React.createElement(Account, { key: accountId, accountId })
+    React.createElement(
+      QueryResult,
+      accounts,
+      accounts.data && accounts.data.length > 0
+        ? React.createElement(
+            React.Fragment,
+            {},
+            accounts.data.map((accountId) =>
+              React.createElement(Account, { key: accountId, accountId })
+            )
           )
-        )
-      : React.createElement(React.Fragment, {}, 'No accounts'),
+        : React.createElement(React.Fragment, {}, 'No accounts')
+    ),
     React.createElement(CreateAccount)
   );
 }

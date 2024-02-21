@@ -21,25 +21,26 @@ container.id = 'app';
 document.body.appendChild(container);
 
 async function run() {
+  window.__VIEM__ = true;
   const root = ReactDOM.createRoot(container);
 
-  const chainId = window.ethereum ? Number(window.ethereum.chainId) : undefined;
   const preset = 'andromeda';
 
   const publicClient = window.ethereum
     ? createPublicClient({ transport: custom(window.ethereum) })
     : undefined;
 
+  const chainId = publicClient ? await publicClient.getChainId() : 0;
+
   const signer = window.ethereum
     ? createWalletClient({ transport: custom(window.ethereum) })
     : undefined;
 
-  let [walletAddress] = signer ? await signer.getAddresses() : undefined;
+  const [walletAddress] = signer ? await signer.getAddresses() : [];
 
-  // Autoconnect here until we have button in the UI
-  if (!walletAddress) {
-    [walletAddress] = signer ? await signer.requestAddresses() : undefined;
-  }
+  window.__connect = async () => {
+    return signer ? await signer.requestAddresses() : undefined;
+  };
 
   root.render(
     React.createElement(

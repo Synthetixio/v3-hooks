@@ -14,18 +14,16 @@ document.body.appendChild(container);
 async function run() {
   const root = ReactDOM.createRoot(container);
 
-  const chainId = window.ethereum ? Number(window.ethereum.chainId) : undefined;
   const preset = 'andromeda';
 
   const provider = window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : undefined;
-  const signer = provider ? provider.getSigner() : undefined;
+  const { chainId } = provider ? await provider.getNetwork() : 0;
 
-  let walletAddress = window.ethereum ? window.ethereum.selectedAddress : undefined;
+  const [walletAddress] = provider ? await provider.listAccounts() : [];
 
-  // Autoconnect here until we have button in the UI
-  if (provider && !walletAddress) {
-    [walletAddress] = await provider.send('eth_requestAccounts');
-  }
+  window.__connect = async () => {
+    return provider ? await provider.send('eth_requestAccounts') : undefined;
+  };
 
   root.render(
     React.createElement(
