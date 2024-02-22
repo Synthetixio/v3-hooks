@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useAccountOwner } from '../lib/useAccountOwner';
+import { useCreateAccount } from '../lib/useCreateAccount';
 import { QueryResult } from './QueryResult';
 import { Address } from './Address';
 
@@ -7,6 +8,7 @@ export function CreateAccount() {
   const [accountId, setAccountId] = React.useState('');
 
   const accountOwner = useAccountOwner({ accountId });
+  const createAccount = useCreateAccount({ accountId });
 
   return (
     <form
@@ -15,6 +17,7 @@ export function CreateAccount() {
       onSubmit={(e) => {
         e.preventDefault();
         console.log(`accountId`, accountId);
+        createAccount.mutate({ accountId });
       }}
     >
       <input
@@ -23,19 +26,17 @@ export function CreateAccount() {
         placeholder="Account ID"
         value={accountId}
         onChange={(e) => setAccountId(e.target.value)}
-      />
-
+      />{' '}
       <button
         type="submit"
-        disabled={
-          accountOwner.isLoading ||
-          accountOwner.data !== '0x0000000000000000000000000000000000000000'
-        }
+        //        disabled={
+        //          (accountId && accountOwner.isLoading) ||
+        //          (accountId && accountOwner.data !== '0x0000000000000000000000000000000000000000')
+        //        }
       >
-        Create
+        {accountId ? `Create account "${accountId}"` : 'Create random account'}
       </button>
       <br />
-
       <QueryResult {...accountOwner}>
         {accountOwner.data === '0x0000000000000000000000000000000000000000' ||
         accountOwner.data === undefined ? null : (
