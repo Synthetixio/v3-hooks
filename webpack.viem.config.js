@@ -56,7 +56,7 @@ const babelRule = {
 };
 
 module.exports = {
-  devtool: false,
+  devtool: 'source-map',
   devServer,
   mode: 'development',
   entry: './playground/viem.js',
