@@ -11,9 +11,7 @@ export function useWalletWatcher() {
 
     function onAccountsChanged(accounts) {
       updateSynthetix({
-        walletAddress: window.ethereum.selectedAddress
-          ? `${window.ethereum.selectedAddress}`.toLowerCase()
-          : undefined,
+        walletAddress: accounts[0] ? accounts[0].toLowerCase() : undefined,
       });
     }
 
