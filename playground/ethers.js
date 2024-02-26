@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createReader } from '../lib/adapters/ethers';
+import { createReader, createWriter } from '../lib/adapters/ethers';
 import { SynthetixProvider, useSynthetix } from '../lib/useSynthetix';
 import { App } from './App';
 import './devtools';
@@ -40,9 +40,12 @@ async function run() {
   const provider = window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : undefined;
   const { chainId } = provider ? await provider.getNetwork() : 0;
 
+  const signer = provider ? provider.getSigner() : undefined;
+
   const accounts = provider ? await provider.listAccounts() : [];
   const walletAddress = accounts[0] ? accounts[0].toLowerCase() : undefined;
   const reader = createReader({ provider });
+  const writer = createWriter({ signer });
 
   window.__connect = async () => {
     return provider ? await provider.send('eth_requestAccounts') : undefined;
@@ -53,7 +56,15 @@ async function run() {
   document.body.appendChild(container);
   const root = ReactDOM.createRoot(container);
   root.render(
-    <SynthetixProvider {...{ chainId, preset, reader, walletAddress }}>
+    <SynthetixProvider
+      {...{
+        chainId,
+        preset,
+        reader,
+        writer,
+        walletAddress,
+      }}
+    >
       <WalletWatcher>
         <App />
       </WalletWatcher>
