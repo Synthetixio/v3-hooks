@@ -8,6 +8,7 @@ const ABI_WHITELIST = {
   CoreProxy: {
     getAccountOwner: true,
     createAccount: true,
+    AccountCreated: true,
   },
   AccountProxy: {
     balanceOf: true,
@@ -76,9 +77,7 @@ async function codegen() {
           'utf8'
         )
       );
-      const abi = fullAbi.filter(
-        ({ type, name }) => type === 'function' && ABI_WHITELIST?.[contractName]?.[name] === true
-      );
+      const abi = fullAbi.filter(({ name }) => ABI_WHITELIST?.[contractName]?.[name] === true);
 
       await fs.writeFile(
         `./lib/deployments/${chainId}-${preset}/${contractName}.js`,
