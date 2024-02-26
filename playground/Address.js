@@ -1,5 +1,5 @@
 import * as React from 'react';
-const { useSynthetix } = require('../lib/useSynthetix');
+import { useSynthetix } from '../lib/useSynthetix';
 
 function href({ chainId, address }) {
   switch (chainId) {

@@ -1,8 +1,7 @@
 import * as React from 'react';
-const { useSynthetix } = require('../lib/useSynthetix');
-const { useIsChainSupported } = require('../lib/useIsChainSupported');
-
-const { Address } = require('./Address');
+import { useIsChainSupported } from '../lib/useIsChainSupported';
+import { useSynthetix } from '../lib/useSynthetix';
+import { Address } from './Address';
 
 function Connected() {
   const [synthetix] = useSynthetix();

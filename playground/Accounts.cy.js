@@ -1,4 +1,3 @@
-import { mount } from 'cypress/react18';
 import * as React from 'react';
 
 describe('Accounts', () => {

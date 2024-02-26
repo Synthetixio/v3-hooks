@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom/client';
-import { createPublicClient, createWalletClient, custom, extractChain } from 'viem';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { createPublicClient, createWalletClient, custom } from 'viem';
 import {
   base,
   baseGoerli,
@@ -11,22 +11,46 @@ import {
   optimismGoerli,
   sepolia,
 } from 'viem/chains';
-
 import { createReader, createWriter } from '../lib/adapters/viem';
-import { SynthetixProvider } from '../lib/useSynthetix';
+import { SynthetixProvider, useSynthetix } from '../lib/useSynthetix';
 import { App } from './App';
 import './devtools';
 
-const container = document.createElement('div');
-container.id = 'app';
-document.body.appendChild(container);
-
 const chains = [base, baseGoerli, baseSepolia, goerli, mainnet, optimism, optimismGoerli, sepolia];
 
-async function run() {
-  window.__VIEM__ = true;
-  const root = ReactDOM.createRoot(container);
+export function WalletWatcher({ children }) {
+  const [, updateSynthetix] = useSynthetix();
 
+  React.useEffect(() => {
+    if (!window.ethereum) {
+      return;
+    }
+
+    function onAccountsChanged(accounts) {
+      updateSynthetix({ walletAddress: accounts[0] ? accounts[0].toLowerCase() : undefined });
+    }
+
+    async function onChainChanged(chainId) {
+      const chain = chains.find(({ id }) => String(id) === String(chainId));
+      const publicClient = createPublicClient({ transport: custom(window.ethereum) });
+      const walletClient = createWalletClient({ chain, transport: custom(window.ethereum) });
+      const writer = createWriter({ publicClient, walletClient });
+      updateSynthetix({ chainId: Number(chainId), writer });
+    }
+
+    window.ethereum.on('accountsChanged', onAccountsChanged);
+    window.ethereum.on('chainChanged', onChainChanged);
+
+    return () => {
+      window.ethereum.removeListener('accountsChanged', onAccountsChanged);
+      window.ethereum.removeListener('chainChanged', onChainChanged);
+    };
+  }, []);
+
+  return children;
+}
+
+async function run() {
   const preset = 'andromeda';
 
   const publicClient = window.ethereum
@@ -34,11 +58,10 @@ async function run() {
     : undefined;
 
   const chainId = publicClient ? await publicClient.getChainId() : 0;
-
-  //  const chain = extractChain({ chains, id: chainId });
+  const chain = chains.find(({ id }) => String(id) === String(chainId));
 
   const walletClient = window.ethereum
-    ? createWalletClient({ transport: custom(window.ethereum) })
+    ? createWalletClient({ chain, transport: custom(window.ethereum) })
     : undefined;
 
   const accounts = walletClient ? await walletClient.getAddresses() : [];
@@ -50,9 +73,15 @@ async function run() {
     return walletClient ? await walletClient.requestAddresses() : undefined;
   };
 
+  const container = document.createElement('div');
+  container.id = 'app';
+  document.body.appendChild(container);
+  const root = ReactDOM.createRoot(container);
   root.render(
     <SynthetixProvider {...{ chainId, preset, reader, writer, walletAddress }}>
-      <App />
+      <WalletWatcher>
+        <App />
+      </WalletWatcher>
     </SynthetixProvider>
   );
 }

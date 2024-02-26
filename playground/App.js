@@ -1,14 +1,11 @@
-import * as React from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-const { useSynthetix } = require('../lib/useSynthetix');
-const { useIsChainSupported } = require('../lib/useIsChainSupported');
-
-const { useWalletWatcher } = require('./useWalletWatcher');
-import { Wallet } from './Wallet';
+import * as React from 'react';
+import { useIsChainSupported } from '../lib/useIsChainSupported';
+import { useSynthetix } from '../lib/useSynthetix';
 import { Accounts } from './Accounts';
+import { Wallet } from './Wallet';
 
 export function App() {
-  useWalletWatcher();
   const [synthetix] = useSynthetix();
 
   const isChainSupported = useIsChainSupported();

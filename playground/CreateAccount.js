@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useAccountOwner } from '../lib/useAccountOwner';
 import { useCreateAccount } from '../lib/useCreateAccount';
-import { QueryResult } from './QueryResult';
 import { Address } from './Address';
+import { QueryResult } from './QueryResult';
 
 export function CreateAccount() {
   const [accountId, setAccountId] = React.useState('');

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useAccounts } from '../lib/useAccounts';
 import { useAccountOwner } from '../lib/useAccountOwner';
+import { useAccounts } from '../lib/useAccounts';
 import { useSynthetix } from '../lib/useSynthetix';
 import { Address } from './Address';
-import { QueryResult } from './QueryResult';
 import { CreateAccount } from './CreateAccount';
+import { QueryResult } from './QueryResult';
 
 export function Account({ accountId }) {
   const accountOwner = useAccountOwner({ accountId });

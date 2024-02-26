@@ -1,19 +1,40 @@
 import { ethers } from 'ethers';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom/client';
-import { SynthetixProvider } from '../lib/useSynthetix';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { createReader } from '../lib/adapters/ethers';
+import { SynthetixProvider, useSynthetix } from '../lib/useSynthetix';
 import { App } from './App';
 import './devtools';
 
-import { createReader } from '../lib/adapters/ethers';
+export function WalletWatcher({ children }) {
+  const [, updateSynthetix] = useSynthetix();
 
-const container = document.createElement('div');
-container.id = 'app';
-document.body.appendChild(container);
+  React.useEffect(() => {
+    if (!window.ethereum) {
+      return;
+    }
+
+    function onAccountsChanged(accounts) {
+      updateSynthetix({ walletAddress: accounts[0] ? accounts[0].toLowerCase() : undefined });
+    }
+
+    async function onChainChanged(chainId) {
+      updateSynthetix({ chainId: Number(chainId) });
+    }
+
+    window.ethereum.on('accountsChanged', onAccountsChanged);
+    window.ethereum.on('chainChanged', onChainChanged);
+
+    return () => {
+      window.ethereum.removeListener('accountsChanged', onAccountsChanged);
+      window.ethereum.removeListener('chainChanged', onChainChanged);
+    };
+  }, []);
+
+  return children;
+}
 
 async function run() {
-  const root = ReactDOM.createRoot(container);
-
   const preset = 'andromeda';
 
   const provider = window.ethereum ? new ethers.providers.Web3Provider(window.ethereum) : undefined;
@@ -27,9 +48,15 @@ async function run() {
     return provider ? await provider.send('eth_requestAccounts') : undefined;
   };
 
+  const container = document.createElement('div');
+  container.id = 'app';
+  document.body.appendChild(container);
+  const root = ReactDOM.createRoot(container);
   root.render(
     <SynthetixProvider {...{ chainId, preset, reader, walletAddress }}>
-      <App />
+      <WalletWatcher>
+        <App />
+      </WalletWatcher>
     </SynthetixProvider>
   );
 }
