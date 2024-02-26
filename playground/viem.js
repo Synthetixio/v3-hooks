@@ -30,12 +30,14 @@ export function WalletWatcher({ children }) {
       updateSynthetix({ walletAddress: accounts[0] ? accounts[0].toLowerCase() : undefined });
     }
 
-    async function onChainChanged(chainId) {
+    async function onChainChanged(chainIdRaw) {
+      const chainId = Number(chainIdRaw);
       const chain = chains.find(({ id }) => String(id) === String(chainId));
-      const publicClient = createPublicClient({ transport: custom(window.ethereum) });
+      const publicClient = createPublicClient({ chain, transport: custom(window.ethereum) });
       const walletClient = createWalletClient({ chain, transport: custom(window.ethereum) });
+      const reader = createReader({ publicClient });
       const writer = createWriter({ publicClient, walletClient });
-      updateSynthetix({ chainId: Number(chainId), writer });
+      updateSynthetix({ chainId: Number(chainId), reader, writer });
     }
 
     window.ethereum.on('accountsChanged', onAccountsChanged);
@@ -60,14 +62,18 @@ async function run() {
   const chainId = publicClient ? await publicClient.getChainId() : 0;
   const chain = chains.find(({ id }) => String(id) === String(chainId));
 
+  const publicClientWithChain = window.ethereum
+    ? createPublicClient({ chain, transport: custom(window.ethereum) })
+    : undefined;
+
   const walletClient = window.ethereum
     ? createWalletClient({ chain, transport: custom(window.ethereum) })
     : undefined;
 
   const accounts = walletClient ? await walletClient.getAddresses() : [];
   const walletAddress = accounts[0] ? accounts[0].toLowerCase() : undefined;
-  const reader = createReader({ publicClient });
-  const writer = createWriter({ publicClient, walletClient });
+  const reader = createReader({ publicClient: publicClientWithChain });
+  const writer = createWriter({ publicClient: publicClientWithChain, walletClient });
 
   window.__connect = async () => {
     return walletClient ? await walletClient.requestAddresses() : undefined;
@@ -78,7 +84,15 @@ async function run() {
   document.body.appendChild(container);
   const root = ReactDOM.createRoot(container);
   root.render(
-    <SynthetixProvider {...{ chainId, preset, reader, writer, walletAddress }}>
+    <SynthetixProvider
+      {...{
+        chainId,
+        preset,
+        reader,
+        writer,
+        walletAddress,
+      }}
+    >
       <WalletWatcher>
         <App />
       </WalletWatcher>
