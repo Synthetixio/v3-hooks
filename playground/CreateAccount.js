@@ -3,12 +3,13 @@ import { useAccountOwner } from '../lib/useAccountOwner';
 import { useCreateAccount } from '../lib/useCreateAccount';
 import { Address } from './Address';
 import { QueryResult } from './QueryResult';
+import { MutationResult } from './MutationResult';
 
 export function CreateAccount() {
   const [accountId, setAccountId] = React.useState('');
 
   const accountOwner = useAccountOwner({ accountId });
-  const createAccount = useCreateAccount({ accountId });
+  const createAccount = useCreateAccount();
 
   const [allowError, setAllowErrror] = React.useState(false);
 
@@ -31,9 +32,11 @@ export function CreateAccount() {
       <button
         type="submit"
         disabled={
-          !allowError &&
-          ((accountId && accountOwner.isLoading) ||
-            (accountId && accountOwner.data !== '0x0000000000000000000000000000000000000000'))
+          accountOwner.isLoading ||
+          createAccount.isPending ||
+          (!allowError &&
+            accountId &&
+            accountOwner.data !== '0x0000000000000000000000000000000000000000')
         }
       >
         {accountId ? `Create account "${accountId}"` : 'Create random account'}
@@ -47,15 +50,15 @@ export function CreateAccount() {
         />
         Allow errors
       </label>
-      <br />
       <QueryResult {...accountOwner}>
         {accountOwner.data === '0x0000000000000000000000000000000000000000' ||
         accountOwner.data === undefined ? null : (
-          <>
+          <div style={{ color: '#f00' }}>
             Account already exists and owned by <Address address={accountOwner.data} />
-          </>
+          </div>
         )}
       </QueryResult>
+      <MutationResult {...createAccount} />
     </form>
   );
 }
