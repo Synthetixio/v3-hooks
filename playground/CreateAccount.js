@@ -10,6 +10,8 @@ export function CreateAccount() {
   const accountOwner = useAccountOwner({ accountId });
   const createAccount = useCreateAccount({ accountId });
 
+  const [allowError, setAllowErrror] = React.useState(false);
+
   return (
     <form
       action="#"
@@ -29,12 +31,22 @@ export function CreateAccount() {
       <button
         type="submit"
         disabled={
-          (accountId && accountOwner.isLoading) ||
-          (accountId && accountOwner.data !== '0x0000000000000000000000000000000000000000')
+          !allowError &&
+          ((accountId && accountOwner.isLoading) ||
+            (accountId && accountOwner.data !== '0x0000000000000000000000000000000000000000'))
         }
       >
         {accountId ? `Create account "${accountId}"` : 'Create random account'}
       </button>
+      <label htmlFor="allowErrors">
+        <input
+          id="allowErrors"
+          type="checkbox"
+          checked={allowError}
+          onChange={(e) => setAllowErrror(e.target.checked)}
+        />
+        Allow errors
+      </label>
       <br />
       <QueryResult {...accountOwner}>
         {accountOwner.data === '0x0000000000000000000000000000000000000000' ||
