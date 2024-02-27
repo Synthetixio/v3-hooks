@@ -11,7 +11,7 @@ export function CreateAccount() {
   const accountOwner = useAccountOwner({ accountId });
   const createAccount = useCreateAccount();
 
-  const [allowError, setAllowErrror] = React.useState(false);
+  const [allowError, setAllowError] = React.useState(false);
 
   return (
     <form
@@ -46,7 +46,7 @@ export function CreateAccount() {
           id="allowErrors"
           type="checkbox"
           checked={allowError}
-          onChange={(e) => setAllowErrror(e.target.checked)}
+          onChange={(e) => setAllowError(e.target.checked)}
         />
         Allow errors
       </label>
