@@ -67,7 +67,13 @@ module.exports = {
     clean: true,
   },
 
-  plugins: [htmlPlugin],
+  plugins: [
+    htmlPlugin,
+    new webpack.NormalModuleReplacementPlugin(
+      new RegExp(`^debug$`),
+      path.resolve(path.dirname(require.resolve(`debug/package.json`)), 'src', 'browser.js')
+    ),
+  ],
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs'],

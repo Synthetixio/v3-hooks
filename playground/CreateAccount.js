@@ -16,7 +16,6 @@ export function CreateAccount() {
       method="POST"
       onSubmit={(e) => {
         e.preventDefault();
-        console.log(`accountId`, accountId);
         createAccount.mutate({ accountId });
       }}
     >
@@ -29,10 +28,10 @@ export function CreateAccount() {
       />{' '}
       <button
         type="submit"
-        //        disabled={
-        //          (accountId && accountOwner.isLoading) ||
-        //          (accountId && accountOwner.data !== '0x0000000000000000000000000000000000000000')
-        //        }
+        disabled={
+          (accountId && accountOwner.isLoading) ||
+          (accountId && accountOwner.data !== '0x0000000000000000000000000000000000000000')
+        }
       >
         {accountId ? `Create account "${accountId}"` : 'Create random account'}
       </button>
