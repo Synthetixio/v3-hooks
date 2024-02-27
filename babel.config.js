@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   presets: [[require.resolve('@babel/preset-react'), { runtime: 'automatic' }]],
 
@@ -35,6 +37,19 @@ module.exports = {
             modules: 'commonjs',
             targets: { node: 'current' },
           },
+        ],
+      ],
+      plugins: [
+        [
+          require.resolve('babel-plugin-istanbul'),
+          {
+            cwd: path.resolve('.'),
+            all: true,
+            excludeNodeModules: false,
+            include: ['**/lib/**/*.js'],
+            exclude: ['**/*.test.*', '**/*.cy.*', '**/*.e2e.*'],
+          },
+          'istanbul',
         ],
       ],
     },

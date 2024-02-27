@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
+const isProd = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
+
 const htmlPlugin = new HtmlWebpackPlugin({
   template: './index.html',
   title: 'Viem Playground / Synthetix V3 Hooks',
@@ -15,7 +18,7 @@ const htmlPlugin = new HtmlWebpackPlugin({
 const devServer = {
   port: process.env.NODE_PORT || '3001',
 
-  hot: true,
+  hot: !isTest,
   liveReload: false,
 
   historyApiFallback: true,
@@ -45,6 +48,7 @@ const babelRule = {
     // Only include code in the playground to ensure that library functions do not need compilation
     /cypress/,
     /playground/,
+    ...(isTest ? [/lib/] : []), // for tests coverage
   ],
   use: {
     loader: require.resolve('babel-loader'),
@@ -55,9 +59,9 @@ const babelRule = {
 };
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: isTest ? false : 'source-map',
   devServer,
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  mode: isProd ? 'production' : 'development',
   entry: './playground/viem.js',
 
   output: {
@@ -75,9 +79,7 @@ module.exports = {
       new RegExp(`^debug$`),
       path.resolve(path.dirname(require.resolve(`debug/package.json`)), 'src', 'browser.js')
     ),
-    ...(process.env.NODE_ENV === 'production'
-      ? []
-      : [new ReactRefreshWebpackPlugin({ overlay: false })]),
+    ...(isProd ? [] : isTest ? [] : [new ReactRefreshWebpackPlugin({ overlay: false })]),
   ],
 
   resolve: {

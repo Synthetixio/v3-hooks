@@ -16,6 +16,7 @@ module.exports = defineConfig({
       webpackConfig: require('./webpack.ethers.config'),
     },
     setupNodeEvents(on, config) {
+      require('@cypress/code-coverage/task')(on, config);
       return config;
     },
   },
@@ -28,6 +29,7 @@ module.exports = defineConfig({
       if (process.env.CI) {
         on('before:browser:launch', require('./cypress/lib/printBrowserLogs').printBrowserLogs);
       }
+      require('@cypress/code-coverage/task')(on, config);
       on('task', {
         ...require('./cypress/tasks/setEthBalance'),
         ...require('./cypress/tasks/createAccount'),

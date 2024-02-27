@@ -1,3 +1,4 @@
+import '@cypress/code-coverage/support';
 import { ethers } from 'ethers';
 import { metamask } from '../lib/metamask';
 import { onLogAdded } from '../lib/onLogAdded';
