@@ -10,7 +10,7 @@ export function Account({ accountId }) {
   const accountOwner = useAccountOwner({ accountId });
 
   return (
-    <p>
+    <p data-testid="account" data-accountId={accountId}>
       {accountId}, owned by{' '}
       <QueryResult {...accountOwner}>
         {accountOwner.data ? <Address address={accountOwner.data} /> : null}
@@ -28,11 +28,13 @@ export function Accounts() {
   return (
     <>
       <h2>Accounts</h2>
-      <QueryResult {...accounts}>
-        {accounts.data && accounts.data.length > 0
-          ? accounts.data.map((accountId) => <Account key={accountId} accountId={accountId} />)
-          : 'No accounts'}
-      </QueryResult>
+      <div data-testid="accounts list">
+        <QueryResult {...accounts}>
+          {accounts.data && accounts.data.length > 0
+            ? accounts.data.map((accountId) => <Account key={accountId} accountId={accountId} />)
+            : 'No accounts'}
+        </QueryResult>
+      </div>
       <CreateAccount />
     </>
   );

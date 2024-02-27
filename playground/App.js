@@ -13,19 +13,21 @@ export function App() {
   return (
     <>
       <h1>Synthetix V3 Hooks Playground</h1>
-      <section>
+      <section data-testid="wallet section">
         <Wallet />
       </section>
 
       {isChainSupported && synthetix.walletAddress ? (
         <>
-          <section>
+          <section data-testid="accounts section">
             <Accounts />
           </section>
         </>
       ) : null}
 
-      <ReactQueryDevtools client={synthetix.queryClient} />
+      {process.env.NODE_ENV === 'test' ? null : (
+        <ReactQueryDevtools client={synthetix.queryClient} />
+      )}
     </>
   );
 }

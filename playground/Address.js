@@ -29,6 +29,7 @@ export function Address({ address }) {
 
   return (
     <a
+      data-testid="address"
       href={href({ chainId: synthetix.chainId, address })}
       target="_blank"
       rel="noopener noreferrer"
@@ -36,18 +37,19 @@ export function Address({ address }) {
         textDecoration: 'none',
       }}
     >
-      <code title={address}>
+      <code title={address.toLowerCase()}>
         {address
           .substring(0, 6)
           .concat('...')
-          .concat(address.substring(address.length - 4))}
+          .concat(address.substring(address.length - 4))
+          .toLowerCase()}
       </code>{' '}
       <span
         title="Copy address to clipboard"
         onClick={(e) => {
           e.preventDefault();
           try {
-            navigator.clipboard.writeText(address);
+            navigator.clipboard.writeText(address.toLowerCase());
           } catch (error) {
             console.error(error);
           }

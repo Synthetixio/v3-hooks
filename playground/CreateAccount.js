@@ -15,6 +15,7 @@ export function CreateAccount() {
 
   return (
     <form
+      data-testid="create account"
       action="#"
       method="POST"
       onSubmit={(e) => {
