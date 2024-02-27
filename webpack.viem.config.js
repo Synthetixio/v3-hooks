@@ -13,7 +13,7 @@ const htmlPlugin = new HtmlWebpackPlugin({
 });
 
 const devServer = {
-  port: '3001',
+  port: process.env.NODE_PORT || '3001',
 
   hot: true,
   liveReload: false,

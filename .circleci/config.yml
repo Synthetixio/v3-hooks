@@ -53,6 +53,8 @@ jobs:
         type: string
       rpc:
         type: string
+      start:
+        type: string
     docker:
       - image: cypress/included:<< pipeline.parameters.cypress-version >>
     environment:
@@ -72,7 +74,9 @@ jobs:
 
       - run:
           name: Run server localhost:3000
-          command: yarn start:ethers
+          environment:
+            NODE_PORT: 3000
+          command: << parameters.start >>
           background: true
 
       - run:
@@ -98,13 +102,31 @@ workflows:
   tests:
     jobs:
       - test
+
       - e2e:
-          name: 'e2e-base-mainnet'
+          name: 'e2e-ethers-base-mainnet'
           chainId: 8453
           preset: 'andromeda'
           rpc: 'https://mainnet.base.org'
+          start: 'yarn start:ethers'
+
       - e2e:
-          name: 'e2e-base-sepolia'
+          name: 'e2e-ethers-base-sepolia'
           chainId: 84532
           preset: 'andromeda'
           rpc: 'https://sepolia.base.org'
+          start: 'yarn start:ethers'
+
+      - e2e:
+          name: 'e2e-viem-base-mainnet'
+          chainId: 8453
+          preset: 'andromeda'
+          rpc: 'https://mainnet.base.org'
+          start: 'yarn start:viem'
+
+      - e2e:
+          name: 'e2e-viem-base-sepolia'
+          chainId: 84532
+          preset: 'andromeda'
+          rpc: 'https://sepolia.base.org'
+          start: 'yarn start:viem'
