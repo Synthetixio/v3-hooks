@@ -24,6 +24,7 @@ module.exports = {
           },
         ],
       ],
+      plugins: [require.resolve('react-refresh/babel')],
     },
 
     test: {

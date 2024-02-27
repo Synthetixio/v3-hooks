@@ -51,10 +51,7 @@ async function run() {
     return provider ? await provider.send('eth_requestAccounts') : undefined;
   };
 
-  const container = document.createElement('div');
-  container.id = 'app';
-  document.body.appendChild(container);
-  const root = ReactDOM.createRoot(container);
+  const root = ReactDOM.createRoot(document.querySelector('#app'));
   root.render(
     <SynthetixProvider
       {...{
@@ -73,3 +70,10 @@ async function run() {
 }
 
 run();
+
+if (module.hot) {
+  module.hot.accept();
+  module.hot.dispose(() => {
+    // do nothing
+  });
+}

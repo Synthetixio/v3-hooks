@@ -1,8 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const htmlPlugin = new HtmlWebpackPlugin({
+  template: './index.html',
   title: 'Ethers Playground / Synthetix V3 Hooks',
   scriptLoading: 'defer',
   minify: false,
@@ -13,7 +15,7 @@ const htmlPlugin = new HtmlWebpackPlugin({
 const devServer = {
   port: '3000',
 
-  hot: false,
+  hot: true,
   liveReload: false,
 
   historyApiFallback: true,
@@ -55,7 +57,7 @@ const babelRule = {
 module.exports = {
   devtool: 'source-map',
   devServer,
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: './playground/ethers.js',
 
   output: {
@@ -73,6 +75,9 @@ module.exports = {
       new RegExp(`^debug$`),
       path.resolve(path.dirname(require.resolve(`debug/package.json`)), 'src', 'browser.js')
     ),
+    ...(process.env.NODE_ENV === 'production'
+      ? []
+      : [new ReactRefreshWebpackPlugin({ overlay: false })]),
   ],
 
   resolve: {
