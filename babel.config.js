@@ -44,9 +44,9 @@ module.exports = {
           require.resolve('babel-plugin-istanbul'),
           {
             cwd: path.resolve('.'),
-            all: true,
-            excludeNodeModules: false,
-            include: ['**/lib/**/*.js'],
+            all: false,
+            excludeNodeModules: true,
+            include: ['lib/**/*.js'],
             exclude: ['**/*.test.*', '**/*.cy.*', '**/*.e2e.*'],
           },
           'istanbul',
