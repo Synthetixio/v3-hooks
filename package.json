@@ -15,7 +15,7 @@
     "build:ethers": "NODE_ENV=production webpack-cli --config webpack.ethers.config.js",
     "start:viem": "webpack-cli serve --config webpack.viem.config.js",
     "build:viem": "NODE_ENV=production webpack-cli --config webpack.viem.config.js",
-    "codegen": "node codegen",
+    "codegen": "node codegen && biome format lib/deployments --write",
     "pretty": "biome format . --write",
     "pretty:check": "biome format .",
     "lint": "biome lint . --apply",

@@ -3,6 +3,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useIsChainSupported } from '../lib/useIsChainSupported';
 import { useSynthetix } from '../lib/useSynthetix';
 import { Accounts } from './Accounts';
+import { Pools } from './Pools';
 import { Wallet } from './Wallet';
 
 export function App() {
@@ -18,11 +19,15 @@ export function App() {
       </section>
 
       {isChainSupported && synthetix.walletAddress ? (
-        <>
-          <section data-testid="accounts section">
-            <Accounts />
-          </section>
-        </>
+        <section data-testid="accounts section">
+          <Accounts />
+        </section>
+      ) : null}
+
+      {isChainSupported ? (
+        <section data-testid="pools section">
+          <Pools />
+        </section>
       ) : null}
 
       {process.env.NODE_ENV === 'test' ? null : (

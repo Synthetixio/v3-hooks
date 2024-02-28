@@ -1,13 +1,17 @@
 export function QueryResult({ isError, error, isLoading, children }) {
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <>Loading...</>;
   }
 
   if (isError) {
     return (
-      <div style={{ color: '#f00' }}>
-        {error ? <pre style={{ margin: 0 }}>{error.stack}</pre> : 'Error'}
-      </div>
+      <>
+        {error ? (
+          <code style={{ color: '#f00', margin: 0, fontFamily: 'monospace' }}>{error.stack}</code>
+        ) : (
+          'Error'
+        )}
+      </>
     );
   }
 
