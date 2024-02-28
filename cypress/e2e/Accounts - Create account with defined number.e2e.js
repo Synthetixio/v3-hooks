@@ -15,12 +15,12 @@ it('creates new account with pre-defined id', () => {
 
   cy.get('[data-testid="accounts list"] [data-testid="account"]').should('have.length', 1);
   cy.get(
-    `[data-testid="accounts list"] [data-testid="account"][data-accountId="${accountId}"]`
+    `[data-testid="accounts list"] [data-testid="account"][data-account-id="${accountId}"]`
   ).should('exist');
 
   cy.get('@wallet').then(({ address }) => {
     cy.contains(
-      `[data-testid="accounts list"] [data-testid="account"][data-accountId="${accountId}"]`,
+      `[data-testid="accounts list"] [data-testid="account"][data-account-id="${accountId}"]`,
       `owned by ${address.substring(0, 6).toLowerCase()}`
     ).should('exist');
   });

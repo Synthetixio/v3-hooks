@@ -29,7 +29,7 @@ export function WalletWatcher({ children }) {
       window.ethereum.removeListener('accountsChanged', onAccountsChanged);
       window.ethereum.removeListener('chainChanged', onChainChanged);
     };
-  }, []);
+  }, [updateSynthetix]);
 
   return children;
 }

@@ -14,7 +14,7 @@ function number(obj) {
 
 window.devtoolsFormatters = window.devtoolsFormatters ?? [];
 window.devtoolsFormatters.push({
-  header: function (obj) {
+  header: (obj) => {
     if (obj instanceof BigInt) {
       return [
         'div',
@@ -26,7 +26,5 @@ window.devtoolsFormatters.push({
     }
     return null;
   },
-  hasBody: function () {
-    return false;
-  },
+  hasBody: () => false,
 });

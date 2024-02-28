@@ -6,9 +6,9 @@ import { onLogAdded } from '../lib/onLogAdded';
 beforeEach(() => {
   cy.on('log:added', onLogAdded);
 
-  cy.on('window:before:load', async (win) => {
+  cy.on('window:before:load', async () => {
     const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545');
-    const network = await provider.getNetwork();
+    await provider.getNetwork();
   });
 });
 

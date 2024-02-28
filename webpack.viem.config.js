@@ -59,10 +59,14 @@ const babelRule = {
 };
 
 module.exports = {
-  devtool: isTest ? false : 'source-map',
+  devtool: isProd ? 'inline-source-map' : isTest ? false : 'source-map',
   devServer,
   mode: isProd ? 'production' : 'development',
   entry: './playground/viem.js',
+  optimization: {
+    moduleIds: 'named',
+    minimize: false,
+  },
 
   output: {
     path: path.resolve(__dirname, 'dist/viem'),
@@ -76,8 +80,8 @@ module.exports = {
   plugins: [
     htmlPlugin,
     new webpack.NormalModuleReplacementPlugin(
-      new RegExp(`^debug$`),
-      path.resolve(path.dirname(require.resolve(`debug/package.json`)), 'src', 'browser.js')
+      /^debug$/,
+      path.resolve(path.dirname(require.resolve('debug/package.json')), 'src', 'browser.js')
     ),
     ...(isProd ? [] : isTest ? [] : [new ReactRefreshWebpackPlugin({ overlay: false })]),
   ],

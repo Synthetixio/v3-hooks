@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useIsChainSupported } from '../lib/useIsChainSupported';
 import { useSynthetix } from '../lib/useSynthetix';
 import { Address } from './Address';
@@ -31,7 +30,9 @@ export function Wallet() {
       {synthetix.walletAddress ? (
         <Connected />
       ) : (
-        <button onClick={window.__connect}>Connect</button>
+        <button type="button" onClick={window.__connect}>
+          Connect
+        </button>
       )}
     </>
   );

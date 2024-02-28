@@ -1,5 +1,5 @@
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import * as React from 'react';
+
 import { useIsChainSupported } from '../lib/useIsChainSupported';
 import { useSynthetix } from '../lib/useSynthetix';
 import { Accounts } from './Accounts';

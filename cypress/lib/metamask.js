@@ -20,13 +20,15 @@ function metamask({ pk, address }) {
           return async ({ method, params }) => {
             switch (method) {
               case 'eth_accounts':
-              case 'eth_requestAccounts':
+              case 'eth_requestAccounts': {
                 return [address];
-              case 'eth_sendTransaction':
+              }
+              case 'eth_sendTransaction': {
                 await provider.send('anvil_impersonateAccount', [address]);
                 const result = await provider.send(method, params);
                 await provider.send('anvil_stopImpersonatingAccount', [address]);
                 return result;
+              }
               default: {
                 return await provider.send(method, params);
               }

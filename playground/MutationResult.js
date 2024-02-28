@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export function MutationResult({ isError, error, isPending, children }) {
   if (isPending) {
     return <div>Updating...</div>;

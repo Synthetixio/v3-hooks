@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useAccountOwner } from '../lib/useAccountOwner';
 import { useCreateAccount } from '../lib/useCreateAccount';
 import { Address } from './Address';

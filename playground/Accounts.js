@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useAccountOwner } from '../lib/useAccountOwner';
 import { useAccounts } from '../lib/useAccounts';
 import { useSynthetix } from '../lib/useSynthetix';
@@ -10,7 +9,7 @@ export function Account({ accountId }) {
   const accountOwner = useAccountOwner({ accountId });
 
   return (
-    <p data-testid="account" data-accountId={accountId}>
+    <p data-testid="account" data-account-id={accountId}>
       {accountId}, owned by{' '}
       <QueryResult {...accountOwner}>
         {accountOwner.data ? <Address address={accountOwner.data} /> : null}

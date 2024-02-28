@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 describe('Accounts', () => {
   it('should be OK', () => {
     function Accounts() {
@@ -18,6 +16,6 @@ describe('Accounts', () => {
       />
     );
 
-    cy.contains(`#app`, 'OK');
+    cy.contains('#app', 'OK');
   });
 });

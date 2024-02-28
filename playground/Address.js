@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useSynthetix } from '../lib/useSynthetix';
 
 function href({ chainId, address }) {
@@ -46,6 +45,7 @@ export function Address({ address }) {
       </code>{' '}
       <span
         title="Copy address to clipboard"
+        onKeyDown={() => {}}
         onClick={(e) => {
           e.preventDefault();
           try {

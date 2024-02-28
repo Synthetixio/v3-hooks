@@ -40,8 +40,8 @@ async function codegen() {
     .filter(Boolean);
   console.log({ supportedDeployments });
 
-  await fs.rm(`lib/deployments`, { force: true, recursive: true });
-  await fs.mkdir(`lib/deployments`, { recursive: true });
+  await fs.rm('lib/deployments', { force: true, recursive: true });
+  await fs.mkdir('lib/deployments', { recursive: true });
   //  await fs.writeFile(
   //    './lib/deployments.js',
   //    await prettyJs(`
@@ -64,7 +64,7 @@ async function codegen() {
       )
     );
 
-    index.push(``);
+    index.push('');
     index.push(`deployments["${chainId}"] = {};`);
     index.push(`deployments["${chainId}"]["${preset}"] = {};`);
 
@@ -100,20 +100,23 @@ async function codegen() {
         'utf8'
       )
     );
-    abi.forEach((e) => AllErrors.add(e));
+
+    for (const e of abi) {
+      AllErrors.add(e);
+    }
   }
 
   const { Interface } = require('@ethersproject/abi');
   await fs.writeFile(
-    `./lib/deployments/AllErrors.js`,
+    './lib/deployments/AllErrors.js',
     await prettyJs(`exports.abi = ${new Interface(Array.from(AllErrors)).format('json')};`),
     'utf8'
   );
   index.push(`deployments["AllErrors"] = require('./AllErrors')`);
 
-  index.push(`exports.deployments = deployments;`);
+  index.push('exports.deployments = deployments;');
 
-  await fs.writeFile(`./lib/deployments/index.js`, await prettyJs(index.join('\n')), 'utf8');
+  await fs.writeFile('./lib/deployments/index.js', await prettyJs(index.join('\n')), 'utf8');
 }
 
 codegen();

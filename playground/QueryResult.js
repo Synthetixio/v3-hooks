@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export function QueryResult({ isError, error, isLoading, children }) {
   if (isLoading) {
     return <div>Loading...</div>;

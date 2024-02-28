@@ -7,7 +7,7 @@ function log(params) {
   }
 
   if (params.entry) {
-    delete params.entry.stackTrace;
+    params.entry.stackTrace = undefined;
     console.log(
       util.inspect(params.entry, {
         compact: true,
@@ -26,7 +26,7 @@ function log(params) {
     );
     return;
   }
-  delete params.stackTrace;
+  params.stackTrace = undefined;
   console.log(util.inspect(params, { compact: true, breakLength: Infinity }));
 }
 
@@ -48,7 +48,7 @@ function ensureRdpPort(args) {
   return port;
 }
 
-function printBrowserLogs(browser = {}, launchOptions) {
+function printBrowserLogs(browser, launchOptions) {
   console.log(launchOptions.args);
 
   const args = launchOptions.args || launchOptions;
