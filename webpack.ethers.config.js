@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
@@ -84,6 +85,7 @@ module.exports = {
       path.resolve(path.dirname(require.resolve('debug/package.json')), 'src', 'browser.js')
     ),
     ...(isProd ? [] : isTest ? [] : [new ReactRefreshWebpackPlugin({ overlay: false })]),
+    ...(isProd ? [new CopyWebpackPlugin({ patterns: [{ from: 'public', to: '' }] })] : []),
   ],
 
   resolve: {
