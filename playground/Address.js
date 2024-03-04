@@ -32,9 +32,6 @@ export function Address({ address }) {
       href={href({ chainId: synthetix.chainId, address })}
       target="_blank"
       rel="noopener noreferrer"
-      style={{
-        textDecoration: 'none',
-      }}
     >
       <code title={address.toLowerCase()}>
         {address

@@ -10,7 +10,7 @@ function Connected() {
     <>
       {!isChainSupported ? (
         <>
-          <b style={{ color: 'red' }}>
+          <b className="error">
             Chain "{synthetix.chainId}" is not supported, switch in your wallet
           </b>
           <br />
