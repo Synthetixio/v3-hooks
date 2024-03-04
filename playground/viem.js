@@ -37,7 +37,7 @@ export function WalletWatcher({ children }) {
       const walletClient = createWalletClient({ chain, transport: custom(window.ethereum) });
       const reader = createReader({ publicClient });
       const writer = createWriter({ publicClient, walletClient });
-      updateSynthetix({ chainId: Number(chainId), reader, writer });
+      updateSynthetix({ chainId, reader, writer });
     }
 
     window.ethereum.on('accountsChanged', onAccountsChanged);

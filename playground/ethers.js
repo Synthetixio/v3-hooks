@@ -18,8 +18,15 @@ export function WalletWatcher({ children }) {
       updateSynthetix({ walletAddress: accounts[0] ? accounts[0].toLowerCase() : undefined });
     }
 
-    async function onChainChanged(chainId) {
-      updateSynthetix({ chainId: Number(chainId) });
+    async function onChainChanged(chainIdRaw) {
+      const chainId = Number(chainIdRaw);
+      const provider = window.ethereum
+        ? new ethers.providers.Web3Provider(window.ethereum)
+        : undefined;
+      const signer = provider ? provider.getSigner() : undefined;
+      const reader = createReader({ provider });
+      const writer = createWriter({ signer });
+      updateSynthetix({ chainId, reader, writer });
     }
 
     window.ethereum.on('accountsChanged', onAccountsChanged);
